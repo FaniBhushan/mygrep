@@ -1,0 +1,22 @@
+@startuml
+namespace mygrep {
+    class PatternSearcher {
+      +searchInFile(path)
+    }
+
+    class ThreadManager {
+      +run()
+    }
+}
+
+class main {
+  - parses args
+  - sets config
+  - starts ThreadMgr
+}
+
+
+main --> ThreadManager
+ThreadManager --> PatternSearcher
+
+@enduml

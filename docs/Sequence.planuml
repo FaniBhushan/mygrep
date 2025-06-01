@@ -1,0 +1,22 @@
+@startuml
+actor User
+User -> main : start mygrep
+main -> Config.Config : parse args
+main -> ThreadManager : start
+alt workQueue not empty
+    loop pop from the workQueue
+        alt is_directory(path)
+            ThreadManager -> ThreadManager : push directory entries to queue
+        else is_regular_file(path)
+            ThreadManager -> PatternSearcher : searchInFile(path)
+        end
+    end
+end
+PatternSearcher -> utility : logError(msg)
+PatternSearcher -> utility : isTextFile(path)
+PatternSearcher -> utility : printMatchSnippet()
+PatternSearcher -> Config.Config : get search pattern
+PatternSearcher -> Config.Config : get case sensitivity
+PatternSearcher -> Config.Config : get regex usage
+PatternSearcher -> Config.Config : get recursive search
+@enduml
